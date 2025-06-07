@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  COMMERCIAL
+  KITNET
+  OTHER
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  RENTED
+  MAINTENANCE
+}
+
+enum LeaseStatus {
+  ACTIVE
+  TERMINATED
+  OVERDUE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model Owner {
+  id         String    @id @default(uuid())
+  name       String
+  taxId      String    @unique
+  phone      String
+  email      String    @unique
+  address    String?
+  properties Property[]
+  createdAt  DateTime  @default(now())
+}
+
+model Tenant {
+  id         String    @id @default(uuid())
+  name       String
+  taxId      String    @unique
+  phone      String
+  email      String    @unique
+  address    String?
+  leases     Lease[]
+  createdAt  DateTime  @default(now())
+}
+
+model Property {
+  id             String         @id @default(uuid())
+  description    String
+  address        String
+  type           PropertyType
+  area           Float?
+  bedrooms       Int?
+  bathrooms      Int?
+  hasGarage      Boolean
+  rentAmount     Decimal
+  status         PropertyStatus
+  ownerId        String
+  owner          Owner          @relation(fields: [ownerId], references: [id])
+  lease          Lease?
+  createdAt      DateTime       @default(now())
+}
+
+model Lease {
+  id            String       @id @default(uuid())
+  propertyId    String       @unique
+  tenantId      String
+  startDate     DateTime
+  endDate       DateTime?
+  rentAmount    Decimal
+  dueDay        Int
+  status        LeaseStatus
+  notes         String?
+  property      Property     @relation(fields: [propertyId], references: [id])
+  tenant        Tenant       @relation(fields: [tenantId], references: [id])
+  payments      Payment[]
+  createdAt     DateTime     @default(now())
+}
+
+model Payment {
+  id            String         @id @default(uuid())
+  leaseId       String
+  dueDate       DateTime
+  paymentDate   DateTime?
+  amount        Decimal
+  status        PaymentStatus
+  lease         Lease          @relation(fields: [leaseId], references: [id])
+  createdAt     DateTime       @default(now())
+}
