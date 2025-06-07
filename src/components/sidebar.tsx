@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const links = [
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/", label: "Dashboard" },
   { href: "/properties", label: "Imóveis" },
   { href: "/tenants", label: "Inquilinos" },
   { href: "/leases", label: "Contratos" },
