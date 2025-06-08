@@ -1,24 +1,37 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {
+  Home,
+  Building2,
+  Users,
+  FileText,
+  CreditCard,
+  UserCog,
+  Settings,
+} from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+import { Nav } from "./nav";
+import Image from "next/image";
 
 const links = [
-  { href: "/", label: "Dashboard" },
-  { href: "/properties", label: "Imóveis" },
-  { href: "/tenants", label: "Inquilinos" },
-  { href: "/leases", label: "Contratos" },
-  { href: "/payments", label: "Pagamentos" },
-  { href: "/owners", label: "Proprietários" },
+  { href: "/", label: "Dashboard", icon: Home },
+  { href: "/properties", label: "Imóveis", icon: Building2 },
+  { href: "/tenants", label: "Inquilinos", icon: Users },
+  { href: "/leases", label: "Contratos", icon: FileText },
+  { href: "/payments", label: "Pagamentos", icon: CreditCard },
+  { href: "/owners", label: "Proprietários", icon: UserCog },
+  { href: "/settings", label: "Configurações", icon: Settings },
 ];
 
 export function Sidebar() {
-  const pathname = usePathname();
-
   return (
     <div className="flex h-screen">
       {/* Mobile */}
@@ -27,42 +40,21 @@ export function Sidebar() {
           <SheetTrigger>
             <Menu className="h-6 w-6" />
           </SheetTrigger>
-          <SheetContent side="left" className="w-[250px]">
-            <nav className="flex flex-col gap-2 mt-8">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-sm font-medium px-3 py-2 rounded hover:bg-muted transition",
-                    pathname === link.href && "bg-muted"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
+          <SheetContent side="left" className="w-[250px] bg-muted border-r">
+            <SheetTitle className="p-6">
+              <Image src="/logo.svg" alt="logo" width={160} height={32} />
+            </SheetTitle>
+            <Nav links={links} />
           </SheetContent>
         </Sheet>
       </div>
 
       {/* Desktop */}
-      <aside className="hidden md:flex md:flex-col md:w-64 md:h-screen bg-gray-100 p-4 border-r">
-        <div className="text-xl font-bold mb-6">RentAdmin</div>
-        <nav className="flex flex-col gap-2">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-sm font-medium px-3 py-2 rounded hover:bg-muted transition",
-                pathname === link.href && "bg-muted"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+      <aside className="hidden md:flex md:flex-col md:w-64 md:h-screen fixed bg-muted border-r">
+        <div className="text-2xl font-bold p-6">
+          <Image src="/logo.svg" alt="logo" width={160} height={32} />
+        </div>
+        <Nav links={links} />
       </aside>
     </div>
   );

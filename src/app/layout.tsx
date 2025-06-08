@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RentAdmin - Sistema de Administração de Imóveis",
+  title: "ImobiGestor - Sistema de Administração de Imóveis",
   description: "Sistema para administrar aluguel de imóveis",
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <QueryProvider>
           <Sidebar />
-          <main className="flex-1 p-6 overflow-auto">{children}</main>
+          <main className="flex-1 p-6 overflow-auto md:ml-64">{children}</main>
           <Toaster />
         </QueryProvider>
       </body>
